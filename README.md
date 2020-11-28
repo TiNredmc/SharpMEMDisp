@@ -1,7 +1,7 @@
 # SharpMEMDisp
 Sharp LS027B7DH01 controller code for STM32F3 Discovery board.
 
-#Available Command
+# Available Command
 
 1. LCD_Init // Display Init
 2. LCD_Clean // Display Clear
