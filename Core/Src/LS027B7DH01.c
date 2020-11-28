@@ -12,6 +12,12 @@ uint8_t clearCMD[2] = {0x04,0x00}; // Display Clear
 uint8_t printCMD[2] = {0x01,0x00}; // Display Bitmap (after issued display update)
 
 
+//This buffer holds 50 Bytes * 240 Row = 12K of Display buffer
+static uint8_t DispBuf[12000];// entire display buffer.
+
+//This buffer holds temporary 52 Bytes including 2 Command bytes and 50 Pixel Bytes (50x8bit = 400 pixel)
+static uint8_t SendBuf[52];
+
 // Display Initialization
 void LCD_Init(LS027B7DH01 *MemDisp, SPI_HandleTypeDef *Bus,
 		GPIO_TypeDef *dispGPIO,uint16_t LCDcs,uint16_t LCDon,
@@ -54,7 +60,7 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 
 	HAL_SPI_Transmit(MemDisp->Bus,(uint8_t *)SendBuf,52,100);
 	}
-	//Send the Dummies buytes after whole display data transmission
+	//Send the Dummies bytes after whole display data transmission
 	HAL_SPI_Transmit(MemDisp->Bus,(uint8_t *)0x00,2,100);
 
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);// Done
@@ -107,6 +113,13 @@ void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, ui
 
 }
 
-
+//Invert color of Display memory buffer
+void LCD_Invert(void){
+	uint16_t invt = 12000 - 1;
+	do{
+	DispBuf[invt] ^= DispBuf[invt];
+	invt--;
+	}while(invt);
+}
 
 

@@ -10,11 +10,6 @@
 
 #include "stm32f3xx_hal.h"
 
-//This buffer holds 50 Bytes * 240 Row = 12K of Display buffer
-uint8_t DispBuf[12000];// entire display buffer.
-
-//This buffer holds temporary 52 Bytes including 2 Command bytes and 50 Pixel Bytes (50x8bit = 400 pixel)
-uint8_t SendBuf[52];
 
 // This typedef holds the hardware parameters. For GPIO and SPI
 typedef struct {
@@ -34,5 +29,6 @@ void LCD_Clean(LS027B7DH01 *MemDisp);
 void LCD_Update(LS027B7DH01 *MemDisp);
 void LCD_LoadFull(uint8_t * BMP[]);
 void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, uint8_t bmpH);
+void LCD_Invert(void);
 
 #endif /* INC_LS027B7DH01_H_ */
