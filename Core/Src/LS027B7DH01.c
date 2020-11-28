@@ -117,7 +117,7 @@ void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, ui
 void LCD_Invert(void){
 	uint16_t invt = 12000 - 1;
 	do{
-	DispBuf[invt] ^= DispBuf[invt];
+	DispBuf[invt] = ~DispBuf[invt];
 	invt--;
 	}while(invt);
 }
