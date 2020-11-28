@@ -113,11 +113,12 @@ void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, ui
 
 }
 
+
 //Invert color of Display memory buffer
 void LCD_Invert(void){
-	uint16_t invt = 12000 - 1;
+	uint16_t invt = 12000;
 	do{
-	DispBuf[invt] = ~DispBuf[invt];
+	DispBuf[invt-1] = ~DispBuf[invt-1];
 	invt--;
 	}while(invt);
 }
