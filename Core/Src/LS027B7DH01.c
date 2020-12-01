@@ -8,8 +8,8 @@
 #include <string.h>
 
 //Display Commands
-uint8_t clearCMD[2] = {0x04,0x00}; // Display Clear
-uint8_t printCMD[2] = {0x01,0x00}; // Display Bitmap (after issued display update)
+uint8_t clearCMD[2] = {0x20,0x00}; // Display Clear
+uint8_t printCMD[2] = {0x80,0x00}; // Display Bitmap (after issued display update)
 
 
 //This buffer holds 50 Bytes * 240 Row = 12K of Display buffer
@@ -46,8 +46,7 @@ void LCD_Init(LS027B7DH01 *MemDisp, SPI_HandleTypeDef *Bus,
 
 // Display update (Transmit data)
 void LCD_Update(LS027B7DH01 *MemDisp){
-	SendBuf[0] = 0x01; // M0 High, M2 Low
-	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDon,GPIO_PIN_RESET);// Turn display off (Temp)
+	SendBuf[0] = printCMD[0]; // M0 High, M2 Low
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);// Begin
 
 	for(uint8_t count;count < 240;count++){
@@ -64,23 +63,16 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 	HAL_SPI_Transmit(MemDisp->Bus,(uint8_t *)0x00,2,100);
 
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);// Done
-
-	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);// Begin
-	HAL_SPI_Transmit(MemDisp->Bus, (uint8_t *)printCMD,2,100 );
-	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);// Done
-
-	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDon,GPIO_PIN_SET);// Turn display back on
 }
 
 // Clear entire Display
 void LCD_Clean(LS027B7DH01 *MemDisp){
-	   HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDon,GPIO_PIN_RESET);// Turn display off (Temp)
 		//At lease 3 + 13 clock is needed for Display clear (16 Clock = 8x2 bit = 2 byte)
 		HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);
 		HAL_SPI_Transmit(MemDisp->Bus, (uint8_t *)clearCMD, 2,100); //According to Datasheet
 		HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);
 
-		HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDon,GPIO_PIN_SET);// Turn display back on
+
 }
 
 // Buffer update (full 400*240 pixels)
@@ -112,7 +104,6 @@ void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, ui
 	}
 
 }
-
 
 //Invert color of Display memory buffer
 void LCD_Invert(void){
