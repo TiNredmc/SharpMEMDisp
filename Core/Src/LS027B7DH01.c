@@ -15,8 +15,8 @@ uint8_t printCMD[2] = {0x80,0x00}; // Display Bitmap (after issued display updat
 //This buffer holds 50 Bytes * 240 Row = 12K of Display buffer
 static uint8_t DispBuf[12000];// entire display buffer.
 
-//This buffer holds temporary 52 Bytes including 2 Command bytes and 50 Pixel Bytes (50x8bit = 400 pixel)
-static uint8_t SendBuf[52];
+//This buffer holds temporary 2 Command bytes
+static uint8_t SendBuf[2];
 
 // Display Initialization
 void LCD_Init(LS027B7DH01 *MemDisp, SPI_HandleTypeDef *Bus,
@@ -56,11 +56,8 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 	SendBuf[1] = count+1;// counting from row number 1 to row number 240
 	uint16_t offset = (count == 0) ? 0 : (count * 50) - 50;
 
-		for(uint8_t arrCnt ; arrCnt < 50; arrCnt++){// passing data from display buffer to transmit buffer.
-			SendBuf[arrCnt+2] = DispBuf[arrCnt+offset];
-		}
-
-	HAL_SPI_Transmit(MemDisp->Bus,(uint8_t *)SendBuf,52,100);
+	HAL_SPI_Transmit(MemDisp->Bus, (uint8_t*)SendBuf, 2, 100);
+	HAL_SPI_Transmit(MemDisp->Bus, (uint8_t*)DispBuf+offset, 50, 100);
 	}
 	//Send the Dummies bytes after whole display data transmission
 	HAL_SPI_Transmit(MemDisp->Bus,(uint8_t *)0x00,2,100);
@@ -68,9 +65,9 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);// Done
 }
 
+//Clean the Buffer
 void LCD_BufClean(LS027B7DH01 *MemDisp){
 
-	//Clean the Buffer
 	memset(DispBuf, 0, 12000);
 }
 
