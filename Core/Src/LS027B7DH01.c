@@ -54,7 +54,8 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 
 	for(uint8_t count;count < 240;count++){
 	SendBuf[1] = count+1;// counting from row number 1 to row number 240
-	uint16_t offset = (count == 0) ? 0 : (count * 50) - 50;
+	//row to DispBuf offset
+	uint16_t offset = ((count * 50) - 50 <= 0) ? 0 : (count * 50) - 50;
 
 	HAL_SPI_Transmit(MemDisp->Bus, (uint8_t*)SendBuf, 2, 100);
 	HAL_SPI_Transmit(MemDisp->Bus, (uint8_t*)DispBuf+offset, 50, 100);
