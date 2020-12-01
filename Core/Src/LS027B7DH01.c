@@ -35,6 +35,9 @@ void LCD_Init(LS027B7DH01 *MemDisp, SPI_HandleTypeDef *Bus,
 	HAL_TIM_PWM_Start(MemDisp->TimerX,MemDisp->COMpwm);
 	MemDisp->TimerX->Instance->CCR1 = 5;
 
+	//Clean the Buffer
+	memset(DispBuf, 0, 12000);
+
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDon,GPIO_PIN_RESET);// Turn display off (Temp)
 	//At lease 3 + 13 clock is needed for Display clear (16 Clock = 8x2 bit = 2 byte)
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);
@@ -63,6 +66,12 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 	HAL_SPI_Transmit(MemDisp->Bus,(uint8_t *)0x00,2,100);
 
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);// Done
+}
+
+void LCD_BufClean(LS027B7DH01 *MemDisp){
+
+	//Clean the Buffer
+	memset(DispBuf, 0, 12000);
 }
 
 // Clear entire Display
