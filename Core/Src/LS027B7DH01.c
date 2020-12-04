@@ -69,7 +69,7 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 //Clean the Buffer
 void LCD_BufClean(void){
 
-	memset(DispBuf, 0, 12000);
+	memset(DispBuf, 0xFF, 12000);
 }
 
 // Clear entire Display
