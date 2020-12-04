@@ -7,6 +7,7 @@
 #include "LS027B7DH01.h"
 #include <string.h>
 
+
 //Display Commands
 uint8_t clearCMD[2] = {0x20,0x00}; // Display Clear
 uint8_t printCMD[2] = {0x80,0x00}; // Display Bitmap (after issued display update)
@@ -120,4 +121,7 @@ void LCD_Invert(void){
 	}while(invt);
 }
 
-
+//Fill screen with either black or white color
+void LCD_Fill(bool fill){
+	fill ? memset(DispBuf, 0, 12000) : memset(DispBuf, 0xFF, 12000);
+}

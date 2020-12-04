@@ -116,6 +116,7 @@ int main(void)
   LCD_Clean(&MemDisp);
   HAL_Delay(1000);
 
+  LCD_Fill(true);
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
 

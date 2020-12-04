@@ -9,7 +9,7 @@
 #define INC_LS027B7DH01_H_
 
 #include "stm32f3xx_hal.h"
-
+#include <stdbool.h>
 
 // This typedef holds the hardware parameters. For GPIO and SPI
 typedef struct {
@@ -31,5 +31,6 @@ void LCD_Update(LS027B7DH01 *MemDisp);
 void LCD_LoadFull(uint8_t * BMP[]);
 void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, uint8_t bmpH);
 void LCD_Invert(void);
+void LCD_Fill(bool fill);
 
 #endif /* INC_LS027B7DH01_H_ */
