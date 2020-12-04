@@ -25,7 +25,7 @@ typedef struct {
 void LCD_Init(LS027B7DH01 *MemDisp, SPI_HandleTypeDef *Bus,
 		GPIO_TypeDef *dispGPIO,uint16_t LCDcs,uint16_t LCDon,
 		TIM_HandleTypeDef *TimerX, uint32_t COMpwm);
-void LCD_BufClean(LS027B7DH01 *MemDisp);
+void LCD_BufClean(void);
 void LCD_Clean(LS027B7DH01 *MemDisp);
 void LCD_Update(LS027B7DH01 *MemDisp);
 void LCD_LoadFull(uint8_t * BMP[]);

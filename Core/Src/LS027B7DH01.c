@@ -67,7 +67,7 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 }
 
 //Clean the Buffer
-void LCD_BufClean(LS027B7DH01 *MemDisp){
+void LCD_BufClean(void){
 
 	memset(DispBuf, 0, 12000);
 }
@@ -78,7 +78,6 @@ void LCD_Clean(LS027B7DH01 *MemDisp){
 		HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);
 		HAL_SPI_Transmit(MemDisp->Bus, (uint8_t *)clearCMD, 2,100); //According to Datasheet
 		HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);
-
 
 }
 
