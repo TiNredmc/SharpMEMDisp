@@ -109,7 +109,7 @@ int main(void)
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
 
-  LCD_Invert(&MemDisp);
+  LCD_Invert();
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
 
