@@ -106,6 +106,21 @@ int main(void)
   HAL_Delay(100);
   LCD_LoadPart((uint8_t **)GawrGura,1,1,30,240);
 
+  LCD_Update(&MemDisp);
+  HAL_Delay(1000);
+
+  LCD_Invert(&MemDisp);
+  LCD_Update(&MemDisp);
+  HAL_Delay(1000);
+
+  LCD_Clean(&MemDisp);
+  HAL_Delay(1000);
+
+  LCD_Update(&MemDisp);
+  HAL_Delay(1000);
+
+  LCD_BufClean();
+  LCD_Update(&MemDisp);
   /* USER CODE END 2 */
 
   /* Infinite loop */
