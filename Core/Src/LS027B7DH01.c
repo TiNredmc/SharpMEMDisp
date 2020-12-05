@@ -157,3 +157,9 @@ void LCD_Invert(void){
 void LCD_Fill(bool fill){
 	memset(DispBuf, (fill ? 0 : 0xFF) , 12000);
 }
+
+/* TODO */
+
+void LCD_Print(char *txtBuf[]){
+
+}
