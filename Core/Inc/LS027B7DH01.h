@@ -30,6 +30,7 @@ void LCD_Clean(LS027B7DH01 *MemDisp);
 void LCD_Update(LS027B7DH01 *MemDisp);
 void LCD_LoadFull(uint8_t * BMP[]);
 void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, uint8_t bmpH);
+void LCD_LoadPix(uint8_t* BMP[], uint16_t Xcord, uint8_t Ycord, uint16_t bmpW, uint8_t bmpH);
 void LCD_Invert(void);
 void LCD_Fill(bool fill);
 

@@ -89,7 +89,7 @@ void LCD_LoadFull(uint8_t * BMP[]){
 
 // Buffer update (with X,Y Coordinate and image WxH) X,Y Coordinate start at (1,1) to (50,240)
 //
-//NOTE THAT THE X COOR and WIDTH ARE BYTE NUMBER NOT PIXEL NUMBER (8 pixel = 1 byte). A.K.A IT'S PIXEL ALIGNED
+//NOTE THAT THE X COOR and WIDTH ARE BYTE NUMBER NOT PIXEL NUMBER (8 pixel = 1 byte). A.K.A IT'S BYTE ALIGNED
 //
 void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, uint8_t bmpH){
 	if ((bmpW > 50) | (Xcord >50) | (Ycord > 240) | (bmpH > 240)) return;
@@ -111,6 +111,37 @@ void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, ui
 	}
 
 }
+
+//Similar to LCD_LoadPart, but x,y coordinate are BOTH PIXEL position.
+void LCD_LoadPix(uint8_t* BMP[], uint16_t Xcord, uint8_t Ycord, uint16_t bmpW, uint8_t bmpH){
+	if ((bmpW > 400) | (Xcord >400) | (Ycord > 240) | (bmpH > 240)) return;
+
+	Xcord = Xcord - 1;
+	Ycord = Ycord - 1;
+	bmpW = bmpW - 1;
+	bmpH = bmpH - 1;
+
+	bmpW = (uint8_t)(bmpW / 8);
+
+	//Shifting value to align the pixel
+	uint8_t Shiftval = (uint8_t)(Xcord % 8);
+
+	//Counting from Y origin point to bmpH using for loop
+	for(uint8_t loop = 0; loop < bmpH; loop++){
+		// turn X an Y into absolute offset number for Buffer
+		uint16_t XYoff = ( (Ycord + loop == 0) ? 0 : (( (Ycord+loop) * 50 ) - 50) )  + (uint16_t)(Xcord/8);
+
+		// turn W and H into absolute offset number for Bitmap image
+		uint16_t WHoff = ( (loop + 1)*bmpW )- bmpW;
+
+		for (uint16_t i=0;i < bmpW;i ++){
+			DispBuf[i+XYoff] = (*BMP[WHoff + i] >> Shiftval);
+			DispBuf[i+XYoff+1] = (*BMP[WHoff + i] << (7 - Shiftval));
+		}
+
+	}
+}
+
 
 //Invert color of Display memory buffer
 void LCD_Invert(void){
