@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "LS027B7DH01.h"
 #include "Image.h"
+#include "Image2.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -114,6 +115,10 @@ int main(void)
   HAL_Delay(1000);
 
   LCD_Clean(&MemDisp);
+  HAL_Delay(1000);
+
+  LCD_LoadFull((uint8_t **)Disney);
+  LCD_Update(&MemDisp);
   HAL_Delay(1000);
 
   LCD_Fill(true);
