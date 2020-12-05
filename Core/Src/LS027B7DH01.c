@@ -155,5 +155,5 @@ void LCD_Invert(void){
 
 //Fill screen with either black or white color
 void LCD_Fill(bool fill){
-	fill ? memset(DispBuf, 0, 12000) : memset(DispBuf, 0xFF, 12000);
+	memset(DispBuf, (fill ? 0 : 0xFF) , 12000);
 }
