@@ -112,6 +112,7 @@ void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, ui
 
 }
 
+/* FIXME TODO */
 //Similar to LCD_LoadPart, but x,y coordinate are BOTH PIXEL position.
 void LCD_LoadPix(uint8_t* BMP[], uint16_t Xcord, uint8_t Ycord, uint16_t bmpW, uint8_t bmpH){
 	if ((bmpW > 400) | (Xcord >400) | (Ycord > 240) | (bmpH > 240)) return;
