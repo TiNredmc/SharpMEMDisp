@@ -1,8 +1,9 @@
-/*
+/* LS027B7DH01 Sharp Memory Display Driver code
  * LS027B7DH01.h
  *
  *  Created on: Nov 26, 2020
- *      Author: TinLethax
+ *      Author: TinLethax (Thipok Jiamjarapan)
+ *     	email : thipok17@gmail.com
  */
 
 #ifndef INC_LS027B7DH01_H_
@@ -30,6 +31,7 @@ void LCD_Update(LS027B7DH01 *MemDisp);
 void LCD_LoadFull(uint8_t * BMP[]);
 void LCD_LoadPart(uint8_t* BMP[], uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, uint8_t bmpH);
 void LCD_LoadPix(uint8_t* BMP[], uint16_t Xcord, uint8_t Ycord, uint16_t bmpW, uint8_t bmpH);
+void LCD_Print(char txtBuf[]);
 void LCD_BufClean(void);
 void LCD_Invert(void);
 void LCD_Fill(bool fill);

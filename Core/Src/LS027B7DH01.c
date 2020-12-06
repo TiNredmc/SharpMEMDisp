@@ -2,9 +2,11 @@
  * LS027B7DH01.c
  *
  *  Created on: Nov 26, 2020
- *      Author: TinLethax
+ *      Author: TinLethax (Thipok Jiamjarapan)
+ *      email : thipok17@gmail.com
  */
 #include "LS027B7DH01.h"
+#include "font8x8_basic.h"
 #include <string.h>
 
 
@@ -18,6 +20,9 @@ static uint8_t DispBuf[12000];// entire display buffer.
 
 //This buffer holds temporary 2 Command bytes
 static uint8_t SendBuf[2];
+
+//This buffer holds 1 Character bitmap image (8x8)
+static uint8_t chBuf[8];
 
 // Display Initialization
 void LCD_Init(LS027B7DH01 *MemDisp, SPI_HandleTypeDef *Bus,
@@ -158,8 +163,33 @@ void LCD_Fill(bool fill){
 	memset(DispBuf, (fill ? 0 : 0xFF) , 12000);
 }
 
-/* TODO */
 
-void LCD_Print(char *txtBuf[]){
+//Print 8x8 Text on screen, TODO
+void LCD_Print(char txtBuf[]){
 
+uint16_t strLen = sizeof(*txtBuf);
+uint8_t YLine = 1;
+uint8_t Xcol = 1;
+uint8_t chOff = 0;
+
+for (uint16_t p = 0; p < strLen;p++){
+	// In case of reached 50 chars or newline detected , Do the newline
+	if ((Xcol > 50) || *txtBuf == 0x0A){
+		Xcol = 1;
+		YLine += 8;
+		txtBuf++;
+	}
+
+	// Avoid printing Newline
+	if (*txtBuf != 0x0A){
+
+	chOff = (*txtBuf - 0x20) ? 0 : ( (*txtBuf - 0x20) * 8) - 8 ;
+	memcpy(chBuf, font8x8_basic + chOff, 8);
+
+	LCD_LoadPart((uint8_t **)chBuf, Xcol, YLine, 1, 8);
+
+	txtBuf++;
+	Xcol++;
+	}
+  }
 }

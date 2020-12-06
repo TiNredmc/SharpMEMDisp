@@ -127,6 +127,11 @@ int main(void)
 
   LCD_BufClean();
   LCD_Update(&MemDisp);
+  HAL_Delay(1000);
+
+  LCD_Print("This is LS027B7DH01 !");
+  LCD_Update(&MemDisp);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
