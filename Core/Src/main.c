@@ -105,7 +105,7 @@ int main(void)
   // ALL GPIO AND BUSES MUST BE INITED BEFORE CALL THIS FUNCTION
   LCD_Init(&MemDisp,&hspi3,GPIOF,CS_Pin,DISP_Pin,&htim15,TIM_CHANNEL_1);
   HAL_Delay(100);
-  LCD_LoadPart((uint8_t **)GawrGura,1,1,30,240);
+  LCD_LoadPart((uint8_t **)GawrGura,10,60,30,240); //Sauce : @NotSafeForCode
 
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
