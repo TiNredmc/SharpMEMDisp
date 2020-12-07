@@ -164,7 +164,7 @@ void LCD_Fill(bool fill){
 }
 
 
-//Print 8x8 Text on screen, TODO
+//Print 8x8 Text on screen, TODO Shorten the code
 void LCD_Print(char txtBuf[]){
 
 uint16_t strLen = sizeof(*txtBuf);
@@ -185,6 +185,10 @@ for (uint16_t p = 0; p < strLen;p++){
 
 	chOff = (*txtBuf - 0x20) ? 0 : ( (*txtBuf - 0x20) * 8) - 8 ;
 	memcpy(chBuf, font8x8_basic + chOff, 8);
+
+	for(uint8_t i=0;i < 8;i++){
+	chBuf[i] = ~chBuf[i];
+	}
 
 	LCD_LoadPart((uint8_t **)chBuf, Xcol, YLine, 1, 8);
 
