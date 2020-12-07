@@ -141,8 +141,8 @@ void LCD_LoadPix(uint8_t* BMP[], uint16_t Xcord, uint8_t Ycord, uint16_t bmpW, u
 		uint16_t WHoff = ( (loop + 1)*bmpW )- bmpW;
 
 		for (uint16_t i=0;i < bmpW;i ++){
-			DispBuf[i+XYoff] = (*BMP[WHoff + i] >> Shiftval);
-			DispBuf[i+XYoff+1] = (*BMP[WHoff + i] << (7 - Shiftval));
+			DispBuf[i+XYoff] = (uint8_t)(*BMP[WHoff + i] >> Shiftval);
+			DispBuf[i+XYoff+1] = (uint8_t)(*BMP[WHoff + i] << (7 - Shiftval));
 		}
 
 	}
