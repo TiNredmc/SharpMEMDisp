@@ -11,8 +11,8 @@
 
 
 //Display Commands
-uint8_t clearCMD[2] = {0x20,0x00}; // Display Clear
-uint8_t printCMD[2] = {0x80,0x00}; // Display Bitmap (after issued display update)
+uint8_t clearCMD[2] = {0x04,0x00}; // Display Clear
+uint8_t printCMD[2] = {0x01,0x00}; // Display Bitmap (after issued display update)
 
 
 //This buffer holds 50 Bytes * 240 Row = 12K of Display buffer
@@ -37,20 +37,20 @@ void LCD_Init(LS027B7DH01 *MemDisp, SPI_HandleTypeDef *Bus,
 	MemDisp->LCDcs = LCDcs;
 	MemDisp->LCDon = LCDon;
 
+	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDon,GPIO_PIN_SET);// Turn display back on
 	//Start 20Hz PWM for COM inversion of the display
 	HAL_TIM_PWM_Start(MemDisp->TimerX,MemDisp->COMpwm);
 	MemDisp->TimerX->Instance->CCR1 = 5;
 
 	//Clean the Buffer
-	memset(DispBuf, 0, 12000);
+	memset(DispBuf, 0xFF, 12000);
 
-	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDon,GPIO_PIN_RESET);// Turn display off (Temp)
 	//At lease 3 + 13 clock is needed for Display clear (16 Clock = 8x2 bit = 2 byte)
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);
-	HAL_SPI_Transmit(MemDisp->Bus, (uint8_t *)clearCMD, 2,100); //According to Datasheet
+	HAL_SPI_Transmit(MemDisp->Bus, (uint8_t *)clearCMD, 2,150); //According to Datasheet
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);
 
-	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDon,GPIO_PIN_SET);// Turn display back on
+
 }
 
 // Display update (Transmit data)
@@ -63,8 +63,8 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 	//row to DispBuf offset
 	uint16_t offset = ((count * 50) - 50 <= 0) ? 0 : (count * 50) - 50;
 
-	HAL_SPI_Transmit(MemDisp->Bus, (uint8_t*)SendBuf, 2, 100);
-	HAL_SPI_Transmit(MemDisp->Bus, (uint8_t*)DispBuf+offset, 50, 100);
+	HAL_SPI_Transmit(MemDisp->Bus, SendBuf, 2, 150);
+	HAL_SPI_Transmit(MemDisp->Bus, DispBuf+offset, 50, 150);
 	}
 	//Send the Dummies bytes after whole display data transmission
 	HAL_SPI_Transmit(MemDisp->Bus,(uint8_t *)0x00,2,100);
@@ -82,7 +82,7 @@ void LCD_BufClean(void){
 void LCD_Clean(LS027B7DH01 *MemDisp){
 		//At lease 3 + 13 clock is needed for Display clear (16 Clock = 8x2 bit = 2 byte)
 		HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);
-		HAL_SPI_Transmit(MemDisp->Bus, (uint8_t *)clearCMD, 2,100); //According to Datasheet
+		HAL_SPI_Transmit(MemDisp->Bus, (uint8_t *)clearCMD, 2,150); //According to Datasheet
 		HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);
 
 }
