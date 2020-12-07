@@ -58,7 +58,7 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 	SendBuf[0] = printCMD[0]; // M0 High, M2 Low
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);// Begin
 
-	for(uint8_t count;count < 240;count++){
+	for(uint8_t count;count < 241;count++){
 	SendBuf[1] = count+1;// counting from row number 1 to row number 240
 	//row to DispBuf offset
 	uint16_t offset = ((count * 50) - 50 <= 0) ? 0 : (count * 50) - 50;
