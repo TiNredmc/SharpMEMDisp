@@ -175,24 +175,24 @@ uint8_t chOff = 0;
 for (uint16_t p = 0; p < strLen;p++){
 	// In case of reached 50 chars or newline detected , Do the newline
 	if ((Xcol > 50) || *txtBuf == 0x0A){
-		Xcol = 1;
-		YLine += 8;
-		txtBuf++;
+		Xcol = 1;// Move cursor to most left
+		YLine += 8;// enter new line
+		txtBuf++;// move to next char
 	}
 
 	// Avoid printing Newline
 	if (*txtBuf != 0x0A){
 
-	chOff = (*txtBuf - 0x20) ? 0 : ( (*txtBuf - 0x20) * 8) - 8 ;
+	chOff = (*txtBuf - 0x20) ? 0 : ( (*txtBuf - 0x20) * 8) - 8 ;// calculate char offset (fist 8 pixel of character)
 
-	for(uint8_t i=0;i < 8;i++){
+	for(uint8_t i=0;i < 8;i++){// Copy the inverted color px to buffer
 	chBuf[i] = ~font8x8_basic[i + chOff];
 	}
 
-	LCD_LoadPart((uint8_t **)chBuf, Xcol, YLine, 1, 8);
+	LCD_LoadPart((uint8_t **)chBuf, Xcol, YLine, 1, 8);// Align the char with the 8n pixels
 
-	txtBuf++;
-	Xcol++;
+	txtBuf++;// move to next char
+	Xcol++;// move cursor to next column
 	}
   }
 }
