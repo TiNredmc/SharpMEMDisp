@@ -184,10 +184,9 @@ for (uint16_t p = 0; p < strLen;p++){
 	if (*txtBuf != 0x0A){
 
 	chOff = (*txtBuf - 0x20) ? 0 : ( (*txtBuf - 0x20) * 8) - 8 ;
-	memcpy(chBuf, font8x8_basic + chOff, 8);
 
 	for(uint8_t i=0;i < 8;i++){
-	chBuf[i] = ~chBuf[i];
+	chBuf[i] = ~font8x8_basic[i + chOff];
 	}
 
 	LCD_LoadPart((uint8_t **)chBuf, Xcol, YLine, 1, 8);
