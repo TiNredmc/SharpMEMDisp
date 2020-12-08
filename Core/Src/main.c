@@ -104,20 +104,21 @@ int main(void)
    */
   // ALL GPIO AND BUSES MUST BE INITED BEFORE CALL THIS FUNCTION
   LCD_Init(&MemDisp,&hspi3,GPIOF,CS_Pin,DISP_Pin,&htim15,TIM_CHANNEL_1);
-  HAL_Delay(100);
-  LCD_LoadPart((uint8_t **)GawrGura,10,60,30,240); //Sauce : @NotSafeForCode
+  HAL_Delay(1000);
 
+  LCD_LoadPart((uint8_t **)GawrGura,1,1,30,240); //Sauce : @NotSafeForCode
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
 
-  LCD_Invert();
-  LCD_Update(&MemDisp);
-  HAL_Delay(1000);
-
+  LCD_BufClean();
   LCD_Clean(&MemDisp);
   HAL_Delay(1000);
 
   LCD_LoadFull((uint8_t **)Disney);
+  LCD_Update(&MemDisp);
+  HAL_Delay(1000);
+
+  LCD_Invert();
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
 
@@ -126,7 +127,7 @@ int main(void)
   HAL_Delay(1000);
 
   LCD_BufClean();
-  LCD_Update(&MemDisp);
+  LCD_Clean(&MemDisp);
   HAL_Delay(1000);
 
   LCD_Print("This is LS027B7DH01 !");
@@ -205,7 +206,7 @@ static void MX_SPI3_Init(void)
   hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
   hspi3.Init.FirstBit = SPI_FIRSTBIT_LSB;
   hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -245,11 +246,7 @@ static void MX_TIM15_Init(void)
   htim15.Instance = TIM15;
   htim15.Init.Prescaler = 48000-1;
   htim15.Init.CounterMode = TIM_COUNTERMODE_UP;
-#ifdef EXPERIMENT
-  htim15.Init.Period = 17-1; // 60Hz
-#else
-  htim15.Init.Period = 50 -1; // 20Hz
-#endif
+  htim15.Init.Period = 20-1;
   htim15.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim15.Init.RepetitionCounter = 0;
   htim15.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
