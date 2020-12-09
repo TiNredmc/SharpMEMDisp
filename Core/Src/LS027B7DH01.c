@@ -42,7 +42,7 @@ void LCD_Init(LS027B7DH01 *MemDisp, SPI_HandleTypeDef *Bus,
 	memset(DispBuf, 0xFF, 12000);
 
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDon,GPIO_PIN_SET);// Turn display back on
-	//Start 20Hz PWM for COM inversion of the display
+	//Start 50Hz PWM for COM inversion of the display
 	HAL_TIM_PWM_Start(MemDisp->TimerX,MemDisp->COMpwm);
 	MemDisp->TimerX->Instance->CCR1 = 5;
 
@@ -69,7 +69,7 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 	HAL_SPI_Transmit(MemDisp->Bus, DispBuf+offset, 50, 150);
 	}
 	//Send the Dummies bytes after whole display data transmission
-	HAL_SPI_Transmit(MemDisp->Bus, 0x00,2,100);
+	HAL_SPI_Transmit(MemDisp->Bus, 0x00,2,150);
 
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_RESET);// Done
 }
@@ -102,7 +102,6 @@ void LCD_LoadFull(uint8_t * BMP){
 //NOTE THAT THE X COOR and WIDTH ARE BYTE NUMBER NOT PIXEL NUMBER (8 pixel = 1 byte). A.K.A IT'S BYTE ALIGNED
 //
 void LCD_LoadPart(uint8_t* BMP, uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, uint8_t bmpH){
-	if ((bmpW > 50) | (Xcord > 50) | (Ycord > 240) | (bmpH > 240)) return;
 
 	Xcord = Xcord - 1;
 	Ycord = Ycord - 1;
