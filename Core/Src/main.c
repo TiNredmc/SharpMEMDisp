@@ -110,13 +110,18 @@ int main(void)
   LCD_Clean(&MemDisp);
   HAL_Delay(1000);
 
-  /*LCD_LoadFull((uint8_t *)Disney);
+  LCD_LoadFull((uint8_t *)Disney);
   LCD_Update(&MemDisp);
-  HAL_Delay(1000);*/
+  HAL_Delay(2000);
 
   LCD_Fill(true);
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
+
+  LCD_LoadPart((uint8_t *)GawrGura,1,1,30,240); //Sauce : @NotSafeForCode
+  HAL_Delay(1000);
+  LCD_Update(&MemDisp);
+  HAL_Delay(2000);
 
   LCD_BufClean();
   LCD_Clean(&MemDisp);
@@ -124,14 +129,13 @@ int main(void)
 
   LCD_Print("This is \nLS027B7DH01 !",21);
   LCD_Update(&MemDisp);
+  HAL_Delay(1000);
 
   LCD_Invert();
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
 
-  LCD_LoadPart((uint8_t *)GawrGura,1,1,30,240); //Sauce : @NotSafeForCode
-  HAL_Delay(1000);
-  LCD_Update(&MemDisp);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
