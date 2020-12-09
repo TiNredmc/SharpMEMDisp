@@ -11,8 +11,8 @@
 #include <stdlib.h>
 
 //Display Commands
-uint8_t clearCMD[2] = {0x04,0x00}; // Display Clear 0x04 (HW_LSB)
-uint8_t printCMD[2] = {0x01,0x00}; // Display Bitmap (after issued display update) 0x01 (HW_LSB)
+uint8_t clearCMD[2] = {0x20,0x00}; // Display Clear 0x04 (HW_LSB)
+uint8_t printCMD[2] = {0x80,0x00}; // Display Bitmap (after issued display update) 0x01 (HW_LSB)
 
 
 //This buffer holds 50 Bytes * 240 Row = 12K of Display buffer
@@ -24,6 +24,9 @@ static uint8_t SendBuf[2];
 //This buffer holds 1 Character bitmap image (8x8)
 static uint8_t chBuf[8];
 
+uint8_t smallRbit(uint8_t re){
+	return (uint8_t)(__RBIT(re) >> 24);
+}
 
 // Display Initialization
 void LCD_Init(LS027B7DH01 *MemDisp, SPI_HandleTypeDef *Bus,
@@ -61,7 +64,7 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 	HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);// Begin
 
 	for(uint8_t count;count < 241;count++){
-	SendBuf[1] = count+1;// counting from row number 1 to row number 240
+	SendBuf[1] = smallRbit(count+1);// counting from row number 1 to row number 240
 	//row to DispBuf offset
 	uint16_t offset = count * 50;
 
@@ -165,6 +168,7 @@ void LCD_Invert(void){
 //Fill screen with either black or white color
 void LCD_Fill(bool fill){
 	memset(DispBuf, (fill ? 0 : 0xFF) , 12000);
+	HAL_Delay(10);
 }
 
 
