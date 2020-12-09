@@ -24,6 +24,10 @@ static uint8_t SendBuf[2];
 //This buffer holds 1 Character bitmap image (8x8)
 static uint8_t chBuf[8];
 
+//These vars required for print function
+static uint8_t YLine = 1;
+static uint8_t Xcol = 1;
+
 uint8_t smallRbit(uint8_t re){
 	return (uint8_t)(__RBIT(re) >> 24);
 }
@@ -142,7 +146,7 @@ void LCD_LoadPix(uint8_t* BMP, uint16_t Xcord, uint8_t Ycord, uint16_t bmpW, uin
 	//Counting from Y origin point to bmpH using for loop
 	for(uint8_t loop = 0; loop < bmpH; loop++){
 		// turn X an Y into absolute offset number for Buffer
-		uint16_t XYoff = ( (Ycord + loop == 0) ? 0 : (( (Ycord+loop) * 50 ) - 50) )  + (uint16_t)(Xcord/8);
+		uint16_t XYoff = (Ycord+loop) * 50   + (uint16_t)(Xcord/8);
 
 		// turn W and H into absolute offset number for Bitmap image
 		uint16_t WHoff = ( (loop + 1)*bmpW )- bmpW;
@@ -176,8 +180,6 @@ void LCD_Fill(bool fill){
 void LCD_Print(char txtBuf[], size_t len){
 
 uint16_t strLen = len;
-uint8_t YLine = 1;
-uint8_t Xcol = 1;
 uint16_t chOff = 0;
 
 for (uint16_t p = 0; p < strLen;p++){
