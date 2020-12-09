@@ -118,16 +118,25 @@ int main(void)
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
 
-  LCD_LoadPart((uint8_t *)GawrGura,1,1,30,240); //Sauce : @NotSafeForCode
-  HAL_Delay(1000);
+  LCD_LoadPart((uint8_t *)GawrGura,10,1,30,240); //Sauce : @NotSafeForCode
+  HAL_Delay(100);
   LCD_Update(&MemDisp);
   HAL_Delay(2000);
 
   LCD_BufClean();
   LCD_Clean(&MemDisp);
-  HAL_Delay(1000);
+
+  // FIXME
+  /*LCD_LoadPix((uint8_t *)GawrGura,10,1,240,240); //Sauce : @NotSafeForCode
+  HAL_Delay(100);
+  LCD_Update(&MemDisp);
+  HAL_Delay(2000);*/
+
+  LCD_BufClean();
+  LCD_Clean(&MemDisp);
 
   LCD_Print("This is \nLS027B7DH01 !",21);
+  HAL_Delay(10);
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
 
@@ -135,6 +144,10 @@ int main(void)
   LCD_Update(&MemDisp);
   HAL_Delay(1000);
 
+  LCD_Print("\nCoded By TinLethax!",21);
+  HAL_Delay(10);
+  LCD_Update(&MemDisp);
+  HAL_Delay(1000);
 
   /* USER CODE END 2 */
 
@@ -326,6 +339,16 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PA0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
 }
 
