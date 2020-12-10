@@ -47,7 +47,7 @@ SPI_HandleTypeDef hspi3;
 TIM_HandleTypeDef htim15;
 
 /* USER CODE BEGIN PV */
-
+uint8_t swCase;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,49 +106,6 @@ int main(void)
   LCD_Init(&MemDisp,&hspi3,GPIOF,CS_Pin,DISP_Pin,&htim15,TIM_CHANNEL_1);
   HAL_Delay(1000);
 
-  LCD_BufClean();
-  LCD_Clean(&MemDisp);
-  HAL_Delay(1000);
-
-  LCD_LoadFull((uint8_t *)Disney);
-  LCD_Update(&MemDisp);
-  HAL_Delay(2000);
-
-  LCD_Fill(true);
-  LCD_Update(&MemDisp);
-  HAL_Delay(1000);
-
-  LCD_LoadPart((uint8_t *)GawrGura,10,1,30,240); //Sauce : @NotSafeForCode
-  HAL_Delay(100);
-  LCD_Update(&MemDisp);
-  HAL_Delay(2000);
-
-  LCD_BufClean();
-  LCD_Clean(&MemDisp);
-
-  // FIXME
-  /*LCD_LoadPix((uint8_t *)GawrGura,10,1,240,240); //Sauce : @NotSafeForCode
-  HAL_Delay(100);
-  LCD_Update(&MemDisp);
-  HAL_Delay(2000);*/
-
-  LCD_BufClean();
-  LCD_Clean(&MemDisp);
-
-  LCD_Print("This is \nLS027B7DH01 !",21);
-  HAL_Delay(10);
-  LCD_Update(&MemDisp);
-  HAL_Delay(1000);
-
-  LCD_Invert();
-  LCD_Update(&MemDisp);
-  HAL_Delay(1000);
-
-  LCD_Print("\nCoded By TinLethax!",21);
-  HAL_Delay(10);
-  LCD_Update(&MemDisp);
-  HAL_Delay(1000);
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -156,7 +113,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  __ASM("wfi");
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -353,7 +310,64 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	switch(swCase){
 
+	case 0:
+		  LCD_BufClean();
+		  LCD_Clean(&MemDisp);
+		  HAL_Delay(1000);
+		  swCase++;
+		  break;
+	case 1:
+		  LCD_LoadFull((uint8_t *)Disney);
+		  LCD_Update(&MemDisp);
+		  HAL_Delay(2000);
+		  swCase++;
+		  break;
+	case 2:
+		  LCD_Fill(true);
+		  LCD_Update(&MemDisp);
+		  HAL_Delay(1000);
+		  swCase++;
+		  break;
+	case 3:
+		  LCD_LoadPart((uint8_t *)GawrGura,10,1,30,240); //Sauce : @NotSafeForCode
+		  HAL_Delay(100);
+		  LCD_Update(&MemDisp);
+		  HAL_Delay(2000);
+		  swCase++;
+		  break;
+	case 4:
+		  LCD_BufClean();
+		  LCD_Clean(&MemDisp);
+		  swCase++;
+		  break;
+
+	case 5:
+		  LCD_Print("This is \nLS027B7DH01 !",21);
+		  HAL_Delay(10);
+		  LCD_Update(&MemDisp);
+		  HAL_Delay(1000);
+		  swCase++;
+		  break;
+	case 6:
+		  LCD_Invert();
+		  LCD_Update(&MemDisp);
+		  HAL_Delay(1000);
+		  swCase++;
+		  break;
+	case 7:
+		  LCD_Print("\nCoded By TinLethax!",21);
+		  HAL_Delay(10);
+		  LCD_Update(&MemDisp);
+		  HAL_Delay(1000);
+		  swCase++;
+		  break;
+	default:
+		break;
+	}
+}
 /* USER CODE END 4 */
 
 /**
