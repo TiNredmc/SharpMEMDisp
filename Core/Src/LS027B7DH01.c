@@ -83,12 +83,15 @@ void LCD_Update(LS027B7DH01 *MemDisp){
 
 //Clean the Buffer
 void LCD_BufClean(void){
-
+	YLine = 1;
+	Xcol = 1;
 	memset(DispBuf, 0xFF, 12000);
 }
 
 // Clear entire Display
 void LCD_Clean(LS027B7DH01 *MemDisp){
+	YLine = 1;
+	Xcol = 1;
 		//At lease 3 + 13 clock is needed for Display clear (16 Clock = 8x2 bit = 2 byte)
 		HAL_GPIO_WritePin(MemDisp->dispGPIO,MemDisp->LCDcs,GPIO_PIN_SET);
 		HAL_SPI_Transmit(MemDisp->Bus, (uint8_t *)clearCMD, 2,150); //According to Datasheet
@@ -176,7 +179,7 @@ void LCD_Fill(bool fill){
 }
 
 
-//Print 8x8 Text on screen, TODO Shorten the code
+//Print 8x8 Text on screen
 void LCD_Print(char txtBuf[], size_t len){
 
 uint16_t strLen = len;
