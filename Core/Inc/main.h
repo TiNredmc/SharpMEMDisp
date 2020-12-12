@@ -66,6 +66,9 @@ void Error_Handler(void);
 #define DISP_GPIO_Port GPIOF
 #define CS_Pin GPIO_PIN_0
 #define CS_GPIO_Port GPIOF
+#define userbtn_Pin GPIO_PIN_0
+#define userbtn_GPIO_Port GPIOA
+#define userbtn_EXTI_IRQn EXTI0_IRQn
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

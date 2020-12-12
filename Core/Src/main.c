@@ -47,7 +47,7 @@ SPI_HandleTypeDef hspi3;
 TIM_HandleTypeDef htim15;
 
 /* USER CODE BEGIN PV */
-uint8_t swCase;
+uint8_t swCase,itCall;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -113,7 +113,59 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  __ASM("wfi");
+	 if(itCall !=0){
+	  switch(swCase){
+
+	  	case 0:
+	  		  LCD_BufClean();
+	  		  LCD_Clean(&MemDisp);
+	  		  itCall = 0;
+	  		  break;
+	  	case 1:
+	  		  LCD_LoadFull((uint8_t *)Disney);
+	  		  HAL_Delay(100);
+	  		  LCD_Update(&MemDisp);
+	  		  itCall = 0;
+	  		  break;
+	  	case 2:
+	  		  LCD_Fill(true);
+	  		  LCD_Update(&MemDisp);
+	  		  itCall = 0;
+	  		  break;
+	  	case 3:
+	  		  LCD_LoadPart((uint8_t *)GawrGura,10,1,30,240); //Sauce : @NotSafeForCode
+	  		  HAL_Delay(100);
+	  		  LCD_Update(&MemDisp);
+	  		  itCall = 0;
+	  		  break;
+	  	case 4:
+	  		  LCD_BufClean();
+	  		  LCD_Clean(&MemDisp);
+	  		  itCall = 0;
+	  		  break;
+
+	  	case 5:
+	  		  LCD_Print("This is \nLS027B7DH01 !",21);
+	  		  HAL_Delay(10);
+	  		  LCD_Update(&MemDisp);
+	  		  itCall = 0;
+	  		  break;
+	  	case 6:
+	  		  LCD_Invert();
+	  		  LCD_Update(&MemDisp);
+	  		  itCall = 0;
+	  		  break;
+	  	case 7:
+	  		  LCD_Print("\nCoded By TinLethax!",21);
+	  		  HAL_Delay(10);
+	  		  LCD_Update(&MemDisp);
+	  		  itCall = 0;
+	  		  swCase = 0;
+	  		  break;
+	  	default:
+	  		break;
+	  	}
+	 }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -297,11 +349,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PA0 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  /*Configure GPIO pin : userbtn_Pin */
+  GPIO_InitStruct.Pin = userbtn_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(userbtn_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
@@ -311,56 +363,11 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	switch(swCase){
-
-	case 0:
-		  LCD_BufClean();
-		  LCD_Clean(&MemDisp);
-		  swCase++;
-		  break;
-	case 1:
-		  LCD_LoadFull((uint8_t *)Disney);
-		  HAL_Delay(100);
-		  LCD_Update(&MemDisp);
-		  swCase++;
-		  break;
-	case 2:
-		  LCD_Fill(true);
-		  LCD_Update(&MemDisp);
-		  swCase++;
-		  break;
-	case 3:
-		  LCD_LoadPart((uint8_t *)GawrGura,10,1,30,240); //Sauce : @NotSafeForCode
-		  HAL_Delay(100);
-		  LCD_Update(&MemDisp);
-		  swCase++;
-		  break;
-	case 4:
-		  LCD_BufClean();
-		  LCD_Clean(&MemDisp);
-		  swCase++;
-		  break;
-
-	case 5:
-		  LCD_Print("This is \nLS027B7DH01 !",21);
-		  HAL_Delay(10);
-		  LCD_Update(&MemDisp);
-		  swCase++;
-		  break;
-	case 6:
-		  LCD_Invert();
-		  LCD_Update(&MemDisp);
-		  swCase++;
-		  break;
-	case 7:
-		  LCD_Print("\nCoded By TinLethax!",21);
-		  HAL_Delay(10);
-		  LCD_Update(&MemDisp);
-		  swCase = 0;
-		  break;
-	default:
-		break;
-	}
+	if(GPIO_Pin == GPIO_PIN_0){
+	itCall = 1;
+	swCase++;
+	if (swCase > 7) swCase = 0;
+  }
 }
 /* USER CODE END 4 */
 
