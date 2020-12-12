@@ -362,7 +362,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 		  HAL_Delay(10);
 		  LCD_Update(&MemDisp);
 		  HAL_Delay(1000);
-		  swCase++;
+		  swCase = 0;
 		  break;
 	default:
 		break;
