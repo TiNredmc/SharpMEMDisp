@@ -316,26 +316,23 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	case 0:
 		  LCD_BufClean();
 		  LCD_Clean(&MemDisp);
-		  HAL_Delay(1000);
 		  swCase++;
 		  break;
 	case 1:
 		  LCD_LoadFull((uint8_t *)Disney);
+		  HAL_Delay(100);
 		  LCD_Update(&MemDisp);
-		  HAL_Delay(2000);
 		  swCase++;
 		  break;
 	case 2:
 		  LCD_Fill(true);
 		  LCD_Update(&MemDisp);
-		  HAL_Delay(1000);
 		  swCase++;
 		  break;
 	case 3:
 		  LCD_LoadPart((uint8_t *)GawrGura,10,1,30,240); //Sauce : @NotSafeForCode
 		  HAL_Delay(100);
 		  LCD_Update(&MemDisp);
-		  HAL_Delay(2000);
 		  swCase++;
 		  break;
 	case 4:
@@ -348,20 +345,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 		  LCD_Print("This is \nLS027B7DH01 !",21);
 		  HAL_Delay(10);
 		  LCD_Update(&MemDisp);
-		  HAL_Delay(1000);
 		  swCase++;
 		  break;
 	case 6:
 		  LCD_Invert();
 		  LCD_Update(&MemDisp);
-		  HAL_Delay(1000);
 		  swCase++;
 		  break;
 	case 7:
 		  LCD_Print("\nCoded By TinLethax!",21);
 		  HAL_Delay(10);
 		  LCD_Update(&MemDisp);
-		  HAL_Delay(1000);
 		  swCase = 0;
 		  break;
 	default:
