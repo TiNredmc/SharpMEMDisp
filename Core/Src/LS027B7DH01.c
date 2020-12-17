@@ -24,7 +24,7 @@ static uint8_t SendBuf[2];
 //This buffer holds 1 Character bitmap image (8x8)
 static uint8_t chBuf[8];
 
-//These vars required for print function
+//These Vars required for print function
 static uint8_t YLine = 1;
 static uint8_t Xcol = 1;
 
@@ -124,7 +124,7 @@ void LCD_LoadPart(uint8_t* BMP, uint8_t Xcord, uint8_t Ycord, uint8_t bmpW, uint
 		XYoff += Xcord;// offset start at the left most, The count from left to right for Xcord times
 
 		// turn W and H into absolute offset number for Bitmap image
-		WHoff = ((loop + 1)*bmpW)- bmpW;
+		WHoff = loop * bmpW;
 
 		memcpy(DispBuf + XYoff, BMP + WHoff, bmpW);
 	}
@@ -149,11 +149,12 @@ void LCD_LoadPix(uint8_t* BMP, uint16_t Xcord, uint8_t Ycord, uint16_t bmpW, uin
 	//Counting from Y origin point to bmpH using for loop
 	for(uint8_t loop = 0; loop < bmpH; loop++){
 		// turn X an Y into absolute offset number for Buffer
-		uint16_t XYoff = (Ycord+loop) * 50   + (uint16_t)(Xcord/8);
+		uint16_t XYoff = ((Ycord+loop) * 50)   + (uint8_t)(Xcord/8);
 
 		// turn W and H into absolute offset number for Bitmap image
-		uint16_t WHoff = ( (loop + 1)*bmpW )- bmpW;
+		uint16_t WHoff = (loop * (uint8_t)(bmpW/8) ) + ( ((bmpW % 8) == 0) ? 0 : 1);
 
+		// Byte Filling
 		for (uint16_t i=0;i < bmpW;i ++){
 			DispBuf[i+XYoff] = (uint8_t)(BMP[WHoff + i] >> Shiftval);
 			DispBuf[i+XYoff+1] = (uint8_t)(BMP[WHoff + i] << (7 - Shiftval));
