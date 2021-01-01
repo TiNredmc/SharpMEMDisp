@@ -138,26 +138,25 @@ void LCD_LoadPix(uint8_t* BMP, uint16_t Xcord, uint8_t Ycord, uint16_t bmpW, uin
 
 	Xcord = Xcord - 1;
 	Ycord = Ycord - 1;
-	bmpW = bmpW - 1;
-	bmpH = bmpH - 1;
 
-	bmpW = (uint8_t)(bmpW / 8);
 
-	//Shifting value to align the pixel
+	//bmpW = (uint8_t)(bmpW / 8);
+
+	//Shifting value to align the pixel with the byte
 	uint8_t Shiftval = (uint8_t)(Xcord % 8);
 
 	//Counting from Y origin point to bmpH using for loop
 	for(uint8_t loop = 0; loop < bmpH; loop++){
 		// turn X an Y into absolute offset number for Buffer
-		uint16_t XYoff = ((Ycord+loop) * 50)   + (uint8_t)(Xcord/8);
+		uint16_t XYoff = ((Ycord+loop) * 50)   + (uint8_t)(Xcord/8)  + (Xcord % 8 ? 1 : 0);
 
 		// turn W and H into absolute offset number for Bitmap image
-		uint16_t WHoff = (loop * (uint8_t)(bmpW/8) ) + ( ((bmpW % 8) == 0) ? 0 : 1);
+		uint16_t WHoff = (loop * (uint8_t)(bmpW/8) )  + (bmpW % 8 ? 1 : 0);
 
 		// Byte Filling
-		for (uint16_t i=0;i < bmpW;i ++){
-			DispBuf[i+XYoff] = (uint8_t)(BMP[WHoff + i] >> Shiftval);
-			DispBuf[i+XYoff+1] = (uint8_t)(BMP[WHoff + i] << (7 - Shiftval));
+		for (uint16_t i=0;i < (bmpW/8) ;i ++){
+			DispBuf[i+XYoff] |= (BMP[WHoff + i] >> Shiftval) ;
+			DispBuf[i+XYoff+1] = (BMP[WHoff+i] << (7 - Shiftval));
 		}
 
 	}
